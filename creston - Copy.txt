@@ -1,0 +1,25 @@
+Select a.Registerno as RegNo,a.TransactionNumber as TrxNo,a.Description, max(a.DBTimeStamp) as Datetime,b.FullName as Cashier,a.ReferenceNumber as Refno,Total as TotalSales,SalesAmt as ChargeAmount, Convert(money,isnull(sum(paidAmount),0.00)) as PaidAmount,isnull(SalesAmt,0.00) - isnull(Sum(PaidAmount),0.00) as Balance, max(d.Datetime) as LastPaymentDate  from TenderEntry a left outer join Users b on a.CashierID = b.id left outer join TenderTypes c on a.TenderCode = c.Code left outer join ReceivablePayment d on a.Registerno = d.Registerno and a.TransactionNumber = d.TransactionNumber left outer join [Transaction] e on a.Registerno = e.Registerno and a.transactionNumber = e.TransactionNumber where  e.cust_acctno = '03' and SalesAmt > 0 and c.Type = 'Receivables' and e.voided = 0  Group by a.Registerno,a.TransactionNumber,a.Description, b.FullName,a.ReferenceNumber,SalesAmt,Total 
+go
+
+Select Rtrim(EmpName) as CustomerName, a.ReferenceNumber as RefNo, 
+sum(salesAmt) as TotalCharge,0 as TotalPaid 
+from TenderEntry a 
+left outer join TenderTypes b on a.TenderCode = b.code 
+left outer join [transaction] c on a.registerno = c.registerno and a.transactionnumber = c.transactionnumber 
+where b.type = 'Receivables' and a.ReferenceNumber = '03' and c.voided = 0 Group by a.Description,
+a.ReferenceNumber,EmpName,tendercode,c.voided  
+Union All Select rtrim(Firstname) + ' ' + rTrim(MiddleInitial) + ' ' + RTrim(LastName) as CustomerName,
+CustAcctNo as RefNo, 0 as TotalCharge,PaidAmount from ReceivablePayment a 
+left outer join customer b on a.CustAcctNo = b.Accountnumber where a.CustAcctNo = '03'
+go
+
+Select Refno as AccountNumber,rtrim(Firstname) + ' ' + rTrim(MiddleInitial) + ' ' + RTrim(LastName) as CustomerName,
+Sum(TotalCharge) as TotalCharge,
+sum(TotalPaid) as TotalPaid, Sum(TotalCharge)  - sum(TotalPaid) as TotalBalance from #tmp a left outer join Customer b on a.RefNo = b.Accountnumber group by rtrim(Firstname) + ' ' + rTrim(MiddleInitial) + ' ' + RTrim(LastName),Refno
+go
+
+select * from TenderTypes where type = 'Receivables'
+select * from Customer where Accountnumber = '03'
+select COUNT(*) from TenderEntry where TenderCode in (10007) and ReferenceNumber = '03'
+select TransactionNumber, Time from [Transaction] where Cust_AcctNo = '03' and TransactionNumber not in (select TransactionNumber from TenderEntry where TenderCode in (10007) and ReferenceNumber = '03')
+
