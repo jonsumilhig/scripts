@@ -5,3 +5,6 @@ LEFT OUTER JOIN (SELECT ItemID, SUM(QuantityReceived) as Received FROM TransferI
 TransferIn b on a.TransferIn_No = b.TransferIn_No WHERE b.Status = 1 GROUP BY ItemID)
 c ON a.ID = c.ItemID
 --where (ISNULL(c.Received,0) - ISNULL(b.QtySold,0) ) <>a.Quantity
+
+
+sample

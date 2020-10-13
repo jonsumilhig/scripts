@@ -11,3 +11,5 @@ ORDER BY SUM([Partitions].[rows]) DESC,[Tables].name
 
 
 ----Right Click on Database---Task--Shrink-Database&Files----
+
+samsalsd
