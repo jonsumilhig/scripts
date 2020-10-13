@@ -1,0 +1,6 @@
+WITH CTE AS(
+   SELECT ID, RegisterNo, BatchNo, DateTime, VATABLE, VATEXEMPT, ZERORATED, VAT,
+       RN = ROW_NUMBER()OVER(PARTITION BY BatchNo ORDER BY BatchNo)
+   FROM dbo.AccountabilityVatDetails
+)
+delete FROM CTE WHERE RN > 1

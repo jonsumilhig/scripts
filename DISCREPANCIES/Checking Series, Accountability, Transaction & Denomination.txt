@@ -1,0 +1,7 @@
+﻿select * from series where convert(char(8), DBtimestamp,112)='20190214'
+
+select * from Accountability where CONVERT(char(8),datetime,112)='20190214'
+
+select * from [Transaction] where CONVERT(char(8),Time,112)='20190214'
+
+select * from Denomination where CONVERT(char(8),DateTime,112)='20190214'

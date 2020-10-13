@@ -1,0 +1,17 @@
+
+-----update ung 10,10,10----------
+
+select * from PriceMemoHeader 
+
+select * from PriceMemo where PricememoID='94'
+
+select price from item where ItemLookupCode='12JF2988191210'
+
+select * from ItemPrice
+
+------- lagay sa excel ang new price--------
+select a.itemlookupcode,a.price,b.itemlookupcode,b.price from item a right join ItemPrice b on a.itemlookupcode = b.itemlookupcode 
+
+--update item set Price = b.Price from item a right join ItemPrice b on a.itemlookupcode = b.itemlookupcode 
+
+update PriceMemoHeader set Status='Performed'

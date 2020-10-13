@@ -1,0 +1,8 @@
+0 open
+1 closed
+2 partial
+3 cancelled
+5 Approved
+6 For Approval
+7 For Correction
+8 Corrected

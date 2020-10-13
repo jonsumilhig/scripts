@@ -1,0 +1,7 @@
+select a.ItemLookupCode, ISNULL(b.QtySold,0) as Sold, ISNULL(c.Received,0) as Received, ISNULL(c.Received,0) - ISNULL(b.QtySold,0) as CurrQty, a.Quantity from Item a 
+LEFT OUTER JOIN (select Itemlookupcode, SUM(QUantity) as QtySold from [TransactionEntries] GROUP BY Itemlookupcode) b
+ON a.ItemLookupCode = b.Itemlookupcode
+LEFT OUTER JOIN (SELECT ItemID, SUM(QuantityReceived) as Received FROM TransferInEntries a JOIn 
+TransferIn b on a.TransferIn_No = b.TransferIn_No WHERE b.Status = 1 GROUP BY ItemID)
+c ON a.ID = c.ItemID
+--where (ISNULL(c.Received,0) - ISNULL(b.QtySold,0) ) <>a.Quantity

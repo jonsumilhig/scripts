@@ -1,0 +1,43 @@
+---------------------------SERVER------------------------------
+select * from [Transaction] where CONVERT(char(8),time,112)='20190302' and RegisterNo=4
+select * from tenderentry where CONVERT(char(8),DBTimeStamp,112)='20190302'  and RegisterNo=4
+
+select * from [Transaction] where TransactionNumber='100207624'  and RegisterNo=4
+select * from TenderEntry where TransactionNumber='100207624'  and RegisterNo=4
+
+-----cash & register READING-------
+select * from Accountability where CONVERT(char(8),datetime,112) = '20190301' and RegisterNo=3
+
+------Pang check lang--------
+select a.TransactionNumber,b.TransactionNumber from [Transaction] a join TenderEntry b on a.TransactionNumber = b.TransactionNumber where CONVERT(char(8),time,112)='20190302' and a.RegisterNo=4
+
+------dapat tally-------
+select sum(total) from [Transaction] where CONVERT(char(8),time,112)='20190302' and RegisterNo=4
+select sum(ExtendedAmt) from TransactionEntries where CONVERT(char(8),DateTime,112)='20190302' and RegisterNo=4
+select sum(SalesAmt) from TenderEntry where CONVERT(char(8),DBTimeStamp,112)='20190302' and RegisterNo=4
+
+
+---------------------------------OFFLINE-----------------------------------
+select * from Accountability where CONVERT(char(8),datetime,112) = '20190302'
+
+select sum(total) from [Transaction] where CONVERT(char(8),time,112)='20190302' --and Voided=0
+select sum(ExtendedAmt) from TransactionEntries where CONVERT(char(8),DateTime,112)='20190302'
+select sum(SalesAmt) from TenderEntry where CONVERT(char(8),DBTimeStamp,112)='20190302' 
+
+
+select * from [Transaction] where TransactionNumber='100207624'
+
+
+select * from [Transaction] where CONVERT(char(8),time,112)='20190302'
+select * from tenderentry where CONVERT(char(8),DBTimeStamp,112)='20190302'
+
+select a.TransactionNumber,b.TransactionNumber from [Transaction] a join TenderEntry b on a.TransactionNumber = b.TransactionNumber where CONVERT(char(8),time,112)='20190302'
+
+
+---------mga dapat ibura dahil may double-----------------
+select * from [Transaction] where TransactionNumber='100207624'
+select * from TenderEntry where TransactionNumber='100207624'
+
+
+--delete from [Transaction] where ID='257088' and TransactionNumber='100207624' and Time='2019-03-02 09:09:11.000'
+

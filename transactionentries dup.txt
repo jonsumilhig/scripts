@@ -1,0 +1,18 @@
+
+select COUNT(*) from TransactionEntries where StoreCode = 102 and DateTime > '2019-10-01 12:00:00.000'
+
+
+
+;WITH CTE (RegisterNo,TransactionNumber,Itemlookupcode,Quantity,ExtendedAmt, SaleType, DuplicateCount)
+AS
+(
+SELECT RegisterNo,TransactionNumber,Itemlookupcode,Quantity,ExtendedAmt, SaleType, ROW_NUMBER() 
+OVER(PARTITION BY RegisterNo,TransactionNumber,Itemlookupcode,Quantity,ExtendedAmt, SaleType ORDER BY TransactionNumber) AS DuplicateCount
+FROM TransactionEntries where Storecode = 102 and convert(char(8),Datetime,112) > '20191011'
+)
+SELECT * FROM CTE WHERE DuplicateCount > 1
+--DELETE FROM CTE WHERE DuplicateCount > 1
+GO
+
+23293
+23287

@@ -1,0 +1,33 @@
+DECLARE @transferNo nvarchar(50) = '100100001706'
+DECLARE @table nvarchar(50) = 'IN'
+
+IF @table = 'IN'
+BEGIN
+	--SELECT * FROM [TransferIn] WHERE TransferIn_No like '%' + @transferNo + '%'
+	--SELECT * FROM [TransferInEntries] WHERE TransferIn_No like '%' + @transferNo + '%'
+
+	UPDATE [TransferIn] set TransferIn_No = CONCAT('A-',@transferNo), Sync = 1 WHERE TransferIn_No like '%' + @transferNo + '%'
+	UPDATE [TransferInEntries] set TransferIn_No = CONCAT('A-',@transferNo), Sync = 1 WHERE TransferIn_No like '%' + @transferNo + '%'
+END
+
+IF @table = 'OUT'
+BEGIN
+	SELECT * FROM [TransferOut] WHERE TransferOut_No like '%' + @transferNo + '%'
+	SELECT * FROM [TransferOutEntries] WHERE TransferOut_No like '%' + @transferNo + '%'
+
+	UPDATE [TransferOut] set TransferOut_No = CONCAT('A-',@transferNo), Sync = 1 WHERE TransferOut_No like '%' + @transferNo + '%'
+	UPDATE [TransferOutEntries] set TransferOut_No = CONCAT('A-',@transferNo), Sync = 1 WHERE TransferOut_No like '%' + @transferNo + '%'
+END
+
+Select TransferIn_No,Title,[From] as OrigFrom,[To], 
+Case when [From] <> '' then b.Name when a.CustomerAcct_no <> '0' then (Select LastName from Customer where accountnumber = a.CustomerAcct_no) When a.SupplierCode <> '0' then (Select Suppliername from Supplier where Code = a.SupplierCode) When a.Other <> '' then a.Other end as [From],
+Requisitioner,Terms,Freight, Remarks,DateCreated,a.LastUpdated,RequiredDate,
+type,Case Status when '0' then 'Open'when '1' then 'Closed'when '2' then 'Partial' when '3' then 'Inactive' End as Status,
+CustomerAcct_no,SupplierCode,Shipvia,isNull(GPTransferNo,'') as GPTransferNo from TransferIn a left outer join Store b on b.StoreCode = a.[From] 
+where Status =  0 and DateCreated between '2019-10-05 00:00:00' and '2019-10-05 23:59:59' order by DateCreated Desc
+go
+
+
+
+exec Proc_Sync_Out_TransferOut'WAREHOUSE','WAREHOUSE','sa','p@ssw0rd','D:\'
+exec Proc_Sync_Out_TransferOutEntries 'WAREHOUSE','WAREHOUSE','sa','p@ssw0rd','D:\'

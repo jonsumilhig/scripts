@@ -1,0 +1,5 @@
+
+
+select 
+'exec Proc_Megaworld ''RRJ103'',''1'',''02685000'',''01'',''02685000'',''C:\MallHookUp\'',''15'',''' + CONVERT(nvarchar, DBTimeStamp, 112) + ''';'
+from Series

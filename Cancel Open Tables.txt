@@ -1,0 +1,1 @@
+update TransactionHold set status='cancelled' where isnull( status,'')=''

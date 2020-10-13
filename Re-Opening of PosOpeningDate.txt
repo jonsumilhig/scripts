@@ -1,0 +1,2 @@
+delete from Series where registerNo = '1' and convert(char(8),dbtimestamp,112) = '20190531'
+UPDATE POSOpeningDate set Status = 'Open', DatetimeEnd = NULL WHERE RegisterNo = 1 and convert(char(8),datetimeStart,112) = '20190531' and Status = 'Closed'

@@ -1,0 +1,36 @@
+Select 
+	convert(char(8),getdate(),112) as Date,
+	a.Accountnumber, 
+	concat(Firstname ,' ',LastName) as Name, 
+	LTRIM(RTRIM(REPLACE(a.OtherNumber,'-',''))) as OtherNumber, 
+	a.CreditLimit, 
+	(a.CreditLimit - AccountBalance) as TotalAmt, 
+	AccountBalance, 
+	LTRIM(RTRIM(REPLACE(OtherNumber,'-',''))) + AccountBalance as NEWCL, 
+	Inactive
+FROM Customer a WHERE Membership like '%benefit%' 
+UNION ALL
+SELECT 'Total','','',SUM(OtherNumber),SUM(CreditLimit), SUM(TotalAmt), SUM(CONVERT(float,AccountBalance)), SUM(NewCL), '' 
+FROM (
+	SELECT 
+		convert(char(8),getdate(),112) as Date,
+		a.Accountnumber, 
+		concat(Firstname ,' ',LastName) as FullName, 
+		convert(float,LTRIM(RTRIM(REPLACE(a.OtherNumber,'-','')))) as OtherNumber, 
+		a.CreditLimit, 
+		(a.CreditLimit - CONVERT(float,AccountBalance)) as TotalAmt, 
+		CONVERT(float,AccountBalance) as AccountBalance, 
+		CONVERT(float,LTRIM(RTRIM(REPLACE(OtherNumber,'-','')))) + CONVERT(float,AccountBalance) as NEWCL, 
+		Inactive
+FROM Customer a 
+WHERE Membership like '%benefit%') b
+
+
+select a.Accountnumber, a.AccountBalance  As 'NewBalance', b.AccountBalance As 'OldBalance', a.OtherNumber as 'Increment' 
+from customer a JOIN CustomerBackup_2019 b ON a.Accountnumber = b.Accountnumber 
+ where a.Membership like '%benefits%'  order by ISNUMERIC(a.OtherNumber)
+
+ select a.Accountnumber,a.NewCl, b.AccountBalance from CustRemBal a JOIN Customer b on a.Accountnumber = b.Accountnumber where date = '20200931' order by date desc
+
+ select * from CustRemBal order by date desc
+

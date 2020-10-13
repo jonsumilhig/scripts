@@ -1,0 +1,20 @@
+DECLARE @trx int = 100000439
+DECLARE @tenderAmt float = 100
+DECLARE @reg int = 1
+DECLARE @batchno int = 1
+DECLARE @cashierid int = 2
+--INSERT INTO  TransactionEntries
+select 
+	a.ID as TransactionHeaderID, b.Datetime as [DateTime], b.TransactionNumber, b.ItemCode as ItemLookupCode, 
+	b.Qty as Quantity, b.Price as UnitPriceSold, b.OriginalPrice as OriginalUnitPrice, b.Extended as ExtendedAmt,
+	c.Cost, b.SalesRep_no, c.Taxable, b.SalesTax, b.Discount_ReasonCode, 0 as Commission_Type, 0 as SalesRep_Commission,
+	b.Remarks, c.UnitOfMeasure, a.RegisterNo, b.LineAddOn, b.PackingQty, '' as ItemTag, 'Retail' as SaleType, 'Sales Transaction' as DocType,
+	'' as [Status], b.LineDiscount, b.DiscAuthorizedBy, a.Mode, a.SyncFlag, a.Conn, a.HQ_Sync, a.StoreCode
+from [Transaction] a 
+JOIN ScannedItemLogs b ON a.TransactionNumber = b.TransactionNumber
+JOIN Item c ON b.ItemCode = c.ItemLookupCode
+WHERE a.TransactionNumber = @trx AND remarks IS NULL
+
+-- FOR CASH
+--INSERT INTO TenderEntry (TransactionNumber, TenderCode, Description, Amount, SalesAmt, DBTimeStamp, RegisterNo, BatchNo, CashierID, Mode, SyncFlag, Conn, HQ_Sync, StoreCode)
+--				VALUES('100000439','10001','Cash', 1000, 1000, '2019-03-08 10:09:56.000', @reg, @batchno, @cashierid, 'Online', 0, 'RW', 1, 101)

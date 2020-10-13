@@ -1,0 +1,10 @@
+----------SALES---------------
+
+exec [Proc_ESales2] '20190206','20190206'
+
+select sum(total) from [Transaction] where CONVERT(char(8),time,112)='20190206' and Voided=0
+select sum(ExtendedAmt) from TransactionEntries where CONVERT(char(8),DateTime,112)='20190206'
+select sum(SalesAmt) from TenderEntry where CONVERT(char(8),DBTimeStamp,112)='20190206'
+
+
+select * from TransactionEntries where CONVERT(char(8),DateTime,112)='20190206' and DiscountReasonCode='SC'

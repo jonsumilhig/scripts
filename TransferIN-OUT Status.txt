@@ -1,0 +1,4 @@
+0 then 'Open'
+1 then 'Closed'
+2 then 'Partial' 
+3 then 'Inactive'

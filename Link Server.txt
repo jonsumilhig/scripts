@@ -1,0 +1,18 @@
+EXEC master.sys.sp_dropserver 'SERVER-PC','droplogins' 
+go
+
+EXEC sp_addlinkedserver @server = 'RWSERVER', @srvproduct = N'MSDASQL', @provider = 'MSDASQL', @provstr = 'DRIVER=\SQL Server\;SERVER=RWSERVER;UID=sa;PWD=PSC@dmin;'
+go
+
+
+
+---------------MDASSQL Login Timeout Error
+sp_configure 'remote login timeout' , 30
+go
+reconfigure with override
+go
+
+sp_configure 'remote query timeout' , 0
+go
+reconfigure with override
+go

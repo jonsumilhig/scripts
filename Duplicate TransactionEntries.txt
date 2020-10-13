@@ -1,0 +1,36 @@
+
+WITH CTE 
+AS
+(
+SELECT 
+TransactionNumber,
+Itemlookupcode,
+Quantity,
+ExtendedAmt,
+UnitOfMeasure,
+RegisterNo,
+SaleType,
+StoreCode,
+ROW_NUMBER() 
+OVER(PARTITION BY 
+TransactionNumber,
+Itemlookupcode,
+Quantity,
+ExtendedAmt,
+UnitOfMeasure,
+RegisterNo,
+SaleType,
+StoreCode
+ORDER BY 
+TransactionNumber,
+Itemlookupcode,
+Quantity,
+ExtendedAmt,
+UnitOfMeasure,
+RegisterNo,
+SaleType,
+StoreCode
+) AS DuplicateCount
+from TransactionEntries where CONVERT(nvarchar, DateTime, 112) between '20191209' and '20191219' and StoreCode = 103
+)
+select * FROM CTE WHERE DuplicateCount > 1

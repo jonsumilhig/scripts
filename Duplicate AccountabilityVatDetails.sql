@@ -1,0 +1,4 @@
+WITH CTE AS(
+   SELECT ID, RegisterNo, BatchNo, DateTime, VATABLE, VATEXEMPT, ZERORATED, VAT, RN = ROW_NUMBER() OVER (PARTITION BY BatchNo ORDER BY BatchNo)
+   FROM AccountabilityVatDetails
+) DELETE FROM CTE WHERE RN > 1

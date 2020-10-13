@@ -1,0 +1,11 @@
+
+
+WITH CTE 
+AS
+(
+SELECT  RegisterNo, CashierID, DBTimeStamp, Status, TransNo_Start, TransNo_End, GPIntegrationFlag, ControlNo, Storecode, HQ_Sync,ROW_NUMBER() 
+OVER(PARTITION BY RegisterNo, CashierID, DBTimeStamp, Status, TransNo_Start, TransNo_End, GPIntegrationFlag, ControlNo, Storecode, HQ_Sync 
+ORDER BY CashierID) AS DuplicateCount
+from series where RegisterNo = 2
+)
+select * FROM CTE WHERE DuplicateCount > 1

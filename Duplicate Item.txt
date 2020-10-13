@@ -1,0 +1,8 @@
+WITH CTE 
+AS
+(
+SELECT ID,ItemLookupCode,Description,ExtendedDescription,SizeCode,ColorCode,StyleCode,GroupItemCode,BinLocation,BuydownPrice,BuydownQuantity,LastReceived,LastUpdated,Notes,QuantityCommitted,GroupID,DepartmentID,CategoryID,SubCategoryID,MessageID,Price,PriceA,PriceB,PriceC,SalePrice,SaleStartDate,SaleEndDate,ItemType,Cost,Quantity,ReorderPoint,RestockLevel,SupplierID,BarcodeFormat,PriceLowerBound,PriceUpperBound,PictureName,LastSold,Brand,ItemStatus,UnitOfMeasure,Wholesale_UOM,Weight,Taxable,LastCost,ReplacementCost,Inactive,LastCounted,MSRP,DateCreated,ApplySalesCommission,ItemTag,PackingQty,Bin,ItemVendorGrp,Sync,HQ_Sync,StoreCode,Freightrate,ROW_NUMBER() 
+OVER(PARTITION BY ID ORDER BY id) AS DuplicateCount
+from item
+)
+delete FROM CTE WHERE DuplicateCount > 1

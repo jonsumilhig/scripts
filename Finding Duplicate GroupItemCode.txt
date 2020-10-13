@@ -1,0 +1,3 @@
+
+Select GroupItemCode from Item group by GroupItemCode having count(GroupItemCode) > 1
+       (COLUMNNAME)			(COLUMNNAME)		   (COLUMNNAME)

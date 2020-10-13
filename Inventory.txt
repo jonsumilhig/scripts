@@ -1,0 +1,6 @@
+Select 
+	ItemCode,a.Description,LastPhysicalCountDate,BegInv,SalesQty,SalesVoid,SalesReturn,TransferOut,TransferIn,
+	POReceived,EndInv,Quantity as CurrQty 
+	from InventoryMovement a with (nolock) left outer join Item b on a.itemcode = b.itemlookupcode 
+	where CONVERT(char(8),LastPhysicalCountDate,112) between '20190901' and '20190930' order by a.Description,Itemcode
+go

@@ -1,0 +1,10 @@
+-------date and time changed----------
+
+select Min(DatetimeStart) from POSOpeningDate 
+select * from POSOpeningDate where Status <> 'closed'
+--delete from POSOpeningDate where Status <> 'closed' and ID = 1626
+
+select * from Batch where CONVERT(char (8),datetimeopened, 112) = '20130101'
+--delete from Batch where CONVERT(char (8),datetimeopened, 112) = '20130101'
+select * from [Transaction] where BatchNo='2356' -- batchno
+

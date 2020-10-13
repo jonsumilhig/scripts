@@ -1,0 +1,9 @@
+
+SELECT TransactionNumber, REPLACE(STUFF((SELECT CONCAT('; ' , b.Description , ' = ' , convert(nvarchar,SalesAmt), CASE 
+	when c.type = 'CreditCard' then 'ACCT. NO.: ' + CreditCardNumber + ' / APPRVD: ' + CreditCardApprovalCode 
+	when c.Type = 'DebitCard' then DebitCardNumber
+	else ''
+end) FROM TenderEntry b JOIN TenderTypes c ON b.TenderCode = c.Code
+WHERE a.TransactionNumber = b.TransactionNumber AND a.RegisterNo = b.RegisterNo FOR XML PATH('')), 1, 2, ''),'; OTHERS','') 
+Tender, RegisterNo, StoreCode
+FROM TenderEntry a WHERE TransactionNumber = '100000641' GROUP BY a.TransactionNumber, RegisterNo,StoreCode ORDER BY TransactionNumber

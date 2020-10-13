@@ -1,0 +1,13 @@
+select SUM(Total) from [Transaction] where convert(char(8),time,112) = '20170925'
+
+select SUM(SalesAmt) from TenderEntry where convert(char(8),DBTimeStamp,112) = '20170925'
+
+select SUM(ExtendedAmt) from TransactionEntries where convert(char(8),DateTime,112) = '20170925'
+
+
+
+select SUM(Total) from [Transaction] where convert(char(8),time,112) = '20170919'
+
+select SUM(SalesAmt) from TenderEntry where convert(char(8),DBTimeStamp,112) = '20170919'
+
+select SUM(ExtendedAmt) from TransactionEntries where convert(char(8),DateTime,112) = '20170919'

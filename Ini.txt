@@ -1,0 +1,188 @@
+Module Mod_INI
+
+    Public Declare Function WritePrivateProfileString Lib "kernel32" Alias "WritePrivateProfileStringA" (ByVal lpApplicationName As String, ByVal lpKeyName As String, ByVal lpString As String, ByVal lpFileName As String) As Long
+    Public Declare Unicode Function GetPrivateProfileString Lib "kernel32" Alias "GetPrivateProfileStringW" (ByVal lpApplicationName As String, ByVal lpKeyName As String, ByVal lpDefault As String, ByVal lpReturnedString As String, ByVal nSize As Int32, ByVal lpFileName As String) As Int32
+
+    Private Const INI_FILE = "RW_Config.INI"
+
+    Public strOnlineServer As String
+    Public strOnlineDatabase As String
+    Public strOnlineUSerName As String
+    Public strOnlinePassword As String
+    Public strOnlineTimeout As String
+
+    Public strOfflineServer As String
+    Public strOfflineDatabase As String
+    Public strOfflineUSerName As String
+    Public strOfflinePassword As String
+    Public strOfflineTimeout As String
+
+    Public strTrainingServer As String
+    Public strTrainingDatabase As String
+    Public strTrainingUSerName As String
+    Public strTrainingPassword As String
+    Public strTrainingTimeout As String
+    Public HasReturned As Boolean = False
+    Public ReturnedReceiptNo As String = ""
+    Public ReceiptType As String = ""
+
+    Public RecalledTransaction As Boolean = False
+
+    Public sStoreName As String
+    Public strYellowTag As String
+    Public strRedTag As String
+    Public strRedTagRequiredPurchase As String
+    Public strYellowTagRequiredPurchase As String
+
+    Public sRemoveDiscount As Boolean = False
+    Public HasDiscount As Boolean = False
+    Public Splashscreen As Boolean = True
+    Public FreshItem As Boolean = False
+    Public TotalTagAmt As String = "0"
+    Public CashisOn As Boolean = True
+    Public strMIN As String = ""
+    Public strLastTransNo As String = ""
+    Public strCurrentBatchNo As String = ""
+    Public strCurrentCashierID As String = ""
+    Public strBatchStatus As String = ""
+    Public UseFreshStandardCode As String = ""
+
+
+    Public Sub ReadINIFile()
+        Try
+            Dim fsoINI As Object
+            fsoINI = CreateObject("Scripting.FilesystemObject")
+
+            If fsoINI.FileExists(Application.StartupPath & "\RW_Config.INI") Then
+
+                sRegisterNo = INIRead(Application.StartupPath & "\RW_Config.INI", "Register", "RegisterNo", "Unknown")
+                strOnlineServer = INIRead(Application.StartupPath & "\RW_Config.INI", "Online_Database", "Online_Server", "Unknown")
+                strOnlineDatabase = INIRead(Application.StartupPath & "\RW_Config.INI", "Online_Database", "Online_Database", "Unknown")
+                strOnlineUSerName = INIRead(Application.StartupPath & "\RW_Config.INI", "Online_Database", "Online_USerName", "Unknown")
+                strOnlinePassword = INIRead(Application.StartupPath & "\RW_Config.INI", "Online_Database", "Online_Password", "Unknown")
+                strOnlineTimeout = INIRead(Application.StartupPath & "\RW_Config.INI", "Online_Database", "Online_Timeout", "Unknown")
+
+                strOfflineServer = INIRead(Application.StartupPath & "\RW_Config.INI", "Offline_Database", "Offline_Server", "Unknown")
+                strOfflineDatabase = INIRead(Application.StartupPath & "\RW_Config.INI", "Offline_Database", "Offline_Database", "Unknown")
+                strOfflineUSerName = INIRead(Application.StartupPath & "\RW_Config.INI", "Offline_Database", "Offline_USerName", "Unknown")
+                strOfflinePassword = INIRead(Application.StartupPath & "\RW_Config.INI", "Offline_Database", "Offline_Password", "Unknown")
+                strOfflineTimeout = INIRead(Application.StartupPath & "\RW_Config.INI", "Offline_Database", "Offline_Timeout", "Unknown")
+
+                strTrainingServer = INIRead(Application.StartupPath & "\RW_Config.INI", "Training_Database", "Training_Server", "Unknown")
+                strTrainingDatabase = INIRead(Application.StartupPath & "\RW_Config.INI", "Training_Database", "Training_Database", "Unknown")
+                strTrainingUSerName = INIRead(Application.StartupPath & "\RW_Config.INI", "Training_Database", "Training_USerName", "Unknown")
+                strTrainingPassword = INIRead(Application.StartupPath & "\RW_Config.INI", "Training_Database", "Training_Password", "Unknown")
+                strTrainingTimeout = INIRead(Application.StartupPath & "\RW_Config.INI", "Training_Database", "Training_Timeout", "Unknown")
+
+                strLastTransNo = INIRead(Application.StartupPath & "\RW_Config.INI", "Offline", "LastTransactionNo", "Unknown")
+                strCurrentBatchNo = INIRead(Application.StartupPath & "\RW_Config.INI", "Offline", "CurrentBatchNo", "")
+                strCurrentCashierID = INIRead(Application.StartupPath & "\RW_Config.INI", "Offline", "CurrentCashierID", "")
+                strBatchStatus = INIRead(Application.StartupPath & "\RW_Config.INI", "Offline", "BatchStatus", "")
+
+                UseFreshStandardCode = INIRead(Application.StartupPath & "\RW_Config.INI", "FRESHITEM", "UseFreshStandardCode", "No")
+
+
+                'For BIR
+                strMIN = INIRead(Application.StartupPath & "\RW_Config.INI", "BIR", "MIN", "")
+                
+
+                'For KMT Trading - Customer loyalty pointing system
+                strYellowTag = INIRead(Application.StartupPath & "\RW_Config.INI", "FOR KMTTrading", "YellowTag", "Unknown")
+                strRedTag = INIRead(Application.StartupPath & "\RW_Config.INI", "FOR KMTTrading", "RedTag", "Unknown")
+                strRedTagRequiredPurchase = INIRead(Application.StartupPath & "\RW_Config.INI", "FOR KMTTrading", "RedRequiredPurchased", "Unknown")
+                strYellowTagRequiredPurchase = INIRead(Application.StartupPath & "\RW_Config.INI", "FOR KMTTrading", "YellowRequiredPurchased", "Unknown")
+
+            End If
+
+            'If fsoINI.FileExists(Application.StartupPath & "\Receipt_length.INI") Then
+
+            '    '[ReceiptHeader]()
+
+            '    Dim oStoreName As Long = INIRead(Application.StartupPath & "\Receipt_Length.INI", "ReceiptHeader", "StoreName", "Unknown")
+            '    Dim oCompanyName As Long = INIRead(Application.StartupPath & "\Receipt_Length.INI", "ReceiptHeader", "CompanyName", "Unknown")
+            '    Dim oStoreAddress As Long = INIRead(Application.StartupPath & "\Receipt_Length.INI", "ReceiptHeader", "StoreAddress", "Unknown")
+            '    Dim oTIN As Long = INIRead(Application.StartupPath & "\Receipt_Length.INI", "ReceiptHeader", "TIN", "Unknown")
+            '    Dim oMIN As Long = INIRead(Application.StartupPath & "\Receipt_Length.INI", "ReceiptHeader", "MIN", "Unknown")
+            '    Dim oStoreCode As Long = INIRead(Application.StartupPath & "\Receipt_Length.INI", "ReceiptHeader", "StoreCode", "Unknown")
+            '    Dim oRegisterNo As Long = INIRead(Application.StartupPath & "\Receipt_Length.INI", "ReceiptHeader", "RegisterNo", "Unknown")
+            '    Dim oInvoiceNo As Long = INIRead(Application.StartupPath & "\Receipt_Length.INI", "ReceiptHeader", "InvoiceNo", "Unknown")
+            '    Dim oDate As Long = INIRead(Application.StartupPath & "\Receipt_Length.INI", "ReceiptHeader", "Date", "Unknown")
+            '    Dim oTime As Long = INIRead(Application.StartupPath & "\Receipt_Length.INI", "ReceiptHeader", "Time", "Unknown")
+
+            '    '[Receipt_TransDetails]
+
+            '    Dim oItemCode As Long = INIRead(Application.StartupPath & "\Receipt_Length.INI", "Receipt_TransDetails", "ItemCode", "Unknown")
+            '    Dim oQuantity As Long = INIRead(Application.StartupPath & "\Receipt_Length.INI", "Receipt_TransDetails", "Quantity", "Unknown")
+            '    Dim oUPrice As Long = INIRead(Application.StartupPath & "\Receipt_Length.INI", "Receipt_TransDetails", "UPrice", "Unknown")
+            '    Dim oExtPrice As Long = INIRead(Application.StartupPath & "\Receipt_Length.INI", "Receipt_TransDetails", "ExtPrice", "Unknown")
+            '    Dim oItemDesc As Long = INIRead(Application.StartupPath & "\Receipt_Length.INI", "Receipt_TransDetails", "ItemDesc", "Unknown")
+
+            '    '[ReceiptSummary]
+            '    Dim oTotalAmount As Long = INIRead(Application.StartupPath & "\Receipt_Length.INI", "ReceiptSummary", "TotalAmount", "Unknown")                              
+            '    Dim oVATName As Long = INIRead(Application.StartupPath & "\Receipt_Length.INI", "ReceiptSummary", "VATName", "Unknown")
+            '    Dim oTenderType As Long = INIRead(Application.StartupPath & "\Receipt_Length.INI", "ReceiptSummary", "TenderType", "Unknown")
+            '    Dim oChange As Long = INIRead(Application.StartupPath & "\Receipt_Length.INI", "ReceiptSummary", "Change", "Unknown")
+
+            '    '[ReceiptMessage]
+            '    Dim oLine1 As Long = INIRead(Application.StartupPath & "\Receipt_Length.INI", "ReceiptMessage", "Line1", "Unknown")
+            '    Dim oLine2 As Long = INIRead(Application.StartupPath & "\Receipt_Length.INI", "ReceiptMessage", "Line2", "Unknown")
+            '    Dim oLine3 As Long = INIRead(Application.StartupPath & "\Receipt_Length.INI", "ReceiptMessage", "Line3", "Unknown")
+            '    Dim oLine4 As Long = INIRead(Application.StartupPath & "\Receipt_Length.INI", "ReceiptMessage", "Line4", "Unknown")
+
+            '    '[CashierName]
+
+            '    Dim oCashier As Long = INIRead(Application.StartupPath & "\Receipt_Length.INI", "CashierName", "Cashier", "Unknown")
+
+            'End If
+
+
+
+
+        Catch ex As Exception
+            MsgBox(ex.Message, MsgBoxStyle.Critical, "Error Message")
+        End Try
+    End Sub
+
+
+    Public Sub RecordlastTransactionNumber_Into_INIfile(ByVal TransactionNo As String, ByVal CurrentBatchNo As String, ByVal CurrentCashierID As Integer, ByVal BatchStatus As String)
+        Dim fsoINI As Object
+
+        fsoINI = CreateObject("Scripting.FilesystemObject")
+
+        If fsoINI.FileExists(Application.StartupPath & "\RW_Config.INI") Then
+            WritePreferences("Offline", "LastTransactionNo", Trim(TransactionNo))
+            WritePreferences("Offline", "CurrentBatchNo", Trim(CurrentBatchNo))
+            WritePreferences("Offline", "CurrentCashierID", Trim(CurrentCashierID))
+            WritePreferences("Offline", "BatchStatus", Trim(BatchStatus))
+        End If
+
+    End Sub
+
+    Public Function INIRead(ByVal INIPath As String, ByVal SectionName As String, ByVal KeyName As String, ByVal DefaultValue As String) As String
+        ' primary version of call gets single value given all parameters 
+        Dim n As Int32
+        Dim sData As String
+        sData = Space$(1024) ' allocate some room 
+        n = GetPrivateProfileString(SectionName, KeyName, DefaultValue, _
+        sData, sData.Length, INIPath)
+        If n > 0 Then ' return whatever it gave us 
+            INIRead = sData.Substring(0, n)
+        Else
+            INIRead = ""
+        End If
+    End Function
+
+    Public Function WritePreferences(ByVal INISection As String, ByVal INIKey As String, ByVal NewValue As String) As Long
+        'This procedure writes the user preferences to an INI file.
+        'Example:      Call WritePreferences("GENERAL","EXTENSION","RCD")
+        'Return Value: NONE
+        Dim lRetVal As Long
+        Dim cTemp As String
+        cTemp = ""
+        'Write Source Folder preferences.
+        lRetVal = WritePrivateProfileString(INISection, INIKey, CStr(Trim(NewValue)), Application.StartupPath & "\" & INI_FILE)
+    End Function
+
+
+
+End Module

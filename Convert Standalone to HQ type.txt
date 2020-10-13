@@ -1,0 +1,24 @@
+select Window from securitymanager group by window
+
+select * from securitymanager where window in ('Item','Location','ReasonCodes',
+'SalesRep','Supplier','UserGroupPrivileges','Users','')
+
+update securitymanager set new='1',edit_Update='1',ReadOnly='1' from
+
+
+--------
+category Id=no
+color
+concessionaire
+department
+item
+reasoncode
+pricememo
+pricememoheader
+store
+subcategory
+style
+supplier
+supplierlist
+tendertypes
+users

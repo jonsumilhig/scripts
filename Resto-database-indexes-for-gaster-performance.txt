@@ -1,0 +1,177 @@
+CREATE NONCLUSTERED INDEX [IX_Hold_01]
+ON [dbo].[TransactionHold] ([TableNo])
+INCLUDE ([ID],[HoldNo],[DateTime],[RegisterNo],[SaleType],[TotalDiscount],[Cust_AcctNo],[PONumber],[FreightCharge],[CashierID],[Batchno],[DepositType],[DepositTypeName],[CreditCardNumber],[CreditCardApprovalCode],[CreditCardExpiration],[DebitCardNumber],[ChequeBankName],[ChequeNumber],[ChequeDate],[TransactionNumber],[TransactedRegNo],[Status],[CancelledBy],[DatetimeCancelled],[AuthorizedBy],[Sync])
+GO
+CREATE NONCLUSTERED INDEX [IX_Transaction_01]
+ON [dbo].[Transaction] ([RegisterNo])
+INCLUDE ([TransactionNumber])
+GO
+CREATE NONCLUSTERED INDEX [IX_TransactionHoldEntries_01]
+ON [dbo].[TransactionHoldEntries] ([ItemCode])
+INCLUDE ([Qty])
+GO
+CREATE NONCLUSTERED INDEX [IX_Item_01]
+ON [dbo].[Item] ([Description])
+
+GO
+CREATE NONCLUSTERED INDEX [IX_Item_02]
+ON [dbo].[Item] ([ItemLookupCode])
+INCLUDE ([Taxable])
+GO
+CREATE NONCLUSTERED INDEX [IX_ScannedItemLogs_01]
+ON [dbo].[ScannedItemLogs] ([ItemCode])
+INCLUDE ([Remarks])
+GO
+CREATE NONCLUSTERED INDEX [IX_TransactionHoldEntries_02]
+ON [dbo].[TransactionHoldEntries] ([ItemCode],[Qty])
+INCLUDE ([ID],[TransactionHold_Id],[Description],[Price],[Extended],[SalesRep_no],[Discount_ReasonCode],[OriginalPrice],[OriginalExtendedPrice],[SalesTax],[UOM],[PackingQty],[Itemtype],[LineAddOn],[TaxExemptAmt],[LineDiscount],[ParentID],[Sync])
+GO
+CREATE NONCLUSTERED INDEX [IX_TransactionHoldEntries_03]
+ON [dbo].[TransactionHoldEntries] ([TransactionHold_Id],[ItemCode],[Qty])
+INCLUDE ([ID],[Description],[Price],[Extended],[SalesRep_no],[Discount_ReasonCode],[OriginalPrice],[OriginalExtendedPrice],[SalesTax],[UOM],[PackingQty],[Itemtype],[LineAddOn],[TaxExemptAmt],[LineDiscount],[ParentID],[Sync])
+GO
+CREATE NONCLUSTERED INDEX [IX_ScannedItemLogs_03]
+ON [dbo].[ScannedItemLogs] ([Status])
+INCLUDE ([Remarks])
+GO
+CREATE NONCLUSTERED INDEX [IX_TransactionHold_04]
+ON [dbo].[TransactionHold] ([SaleType])
+INCLUDE ([HoldNo])
+GO
+CREATE NONCLUSTERED INDEX [IX_TransactionHold_05]
+ON [dbo].[TransactionHold] ([FreightCharge],[TableNo])
+INCLUDE ([PONumber],[ChequeBankName],[ChequeNumber],[Status])
+GO
+CREATE NONCLUSTERED INDEX [IX_TransactionHold_06]
+ON [dbo].[TransactionHold] ([FreightCharge])
+INCLUDE ([DateTime],[TableNo])
+GO
+CREATE NONCLUSTERED INDEX [IX_TransactionHold_07]
+ON [dbo].[TransactionHold] ([Status])
+INCLUDE ([ID])
+GO
+CREATE NONCLUSTERED INDEX [IX_TransactionServiceCharge_01]
+ON [dbo].[TransactionServiceCharge] ([Amount])
+INCLUDE ([TransactionNumber],[RegisterNo])
+GO
+CREATE NONCLUSTERED INDEX [IX_Transaction_02]
+ON [dbo].[Transaction] ([Voided])
+INCLUDE ([TransactionNumber],[RegisterNo])
+GO
+CREATE NONCLUSTERED INDEX [IX_TransactionHold_08]
+ON [dbo].[TransactionHold] ([HoldNo])
+
+GO
+CREATE NONCLUSTERED INDEX [IX_TransactionHold_09]
+ON [dbo].[TransactionHold] ([RegisterNo])
+INCLUDE ([HoldNo])
+GO
+CREATE NONCLUSTERED INDEX [IX_OrderType_01]
+ON [dbo].[OrderType] ([HoldID])
+INCLUDE ([Status])
+GO
+CREATE NONCLUSTERED INDEX [IX_TransactionHold_10]
+ON [dbo].[TransactionHold] ([SaleType],[TableNo])
+INCLUDE ([DateTime],[PONumber],[DebitCardNumber],[Status])
+GO
+CREATE NONCLUSTERED INDEX [IX_TransactionEntries_03]
+ON [dbo].[TransactionEntries] ([TransactionNumber],[RegisterNo])
+
+GO
+CREATE NONCLUSTERED INDEX [IX_TransactionHold_11]
+ON [dbo].[TransactionHold] ([TableNo],[TransactionNumber])
+
+GO
+GO
+CREATE NONCLUSTERED INDEX [IX_Transaction_04]
+ON [dbo].[Transaction] ([TransactionNumber],[RegisterNo])
+
+GO
+CREATE NONCLUSTERED INDEX [IX_TransactionHold_12]
+ON [dbo].[TransactionHold] ([SaleType],[ChequeBankName],[TransactionNumber],[TransactedRegNo])
+
+GO
+CREATE NONCLUSTERED INDEX [IX_TenderEntry_01]
+ON [dbo].[TenderEntry] ([TransactionNumber],[RegisterNo])
+
+GO
+CREATE NONCLUSTERED INDEX [IX_Transaction_06]
+ON [dbo].[Transaction] ([RegisterNo],[Voided],[BatchNo])
+INCLUDE ([Total])
+GO
+CREATE NONCLUSTERED INDEX [IX_TransactionHold_13]
+ON [dbo].[TransactionHold] ([RegisterNo],[CashierID],[Batchno])
+INCLUDE ([PONumber])
+GO
+CREATE NONCLUSTERED INDEX [IX_Accountability_01]
+ON [dbo].[Accountability] ([RegisterNo],[BatchNo])
+
+GO
+CREATE NONCLUSTERED INDEX [IX_TransactionEntries_10]
+ON [dbo].[TransactionEntries] ([RegisterNo])
+INCLUDE ([TransactionNumber],[Quantity],[OriginalUnitPrice],[ExtendedAmt],[Taxable],[DiscountReasonCode])
+GO
+CREATE NONCLUSTERED INDEX [IX_TransactionEntries_12]
+ON [dbo].[TransactionEntries] ([RegisterNo],[DiscountReasonCode])
+INCLUDE ([TransactionNumber],[LineDiscount])
+GO
+CREATE NONCLUSTERED INDEX [IX_Transaction_14]
+ON [dbo].[Transaction] ([RegisterNo],[Voided],[Time])
+INCLUDE ([TransactionNumber])
+GO
+CREATE NONCLUSTERED INDEX [IX_TenderEntry_03]
+ON [dbo].[TenderEntry] ([TenderCode],[RegisterNo],[BatchNo],[CashierID])
+INCLUDE ([TransactionNumber],[Description],[SalesAmt],[StoreCode])
+GO
+CREATE NONCLUSTERED INDEX [IX_TenderEntry_04]
+ON [dbo].[TenderEntry] ([TenderCode],[RegisterNo],[DBTimeStamp])
+INCLUDE ([TransactionNumber],[Description],[SalesAmt],[StoreCode])
+GO
+CREATE NONCLUSTERED INDEX [IX_TransactionServiceCharge_03]
+ON [dbo].[TransactionServiceCharge] ([RegisterNo])
+INCLUDE ([TransactionNumber],[Amount])
+GO
+CREATE NONCLUSTERED INDEX [IX_Transaction_10]
+ON [dbo].[Transaction] ([RegisterNo],[Voided],[Time])
+INCLUDE ([TransactionNumber],[CashierID],[BatchNo])
+GO
+CREATE NONCLUSTERED INDEX [IX_TenderEntry_05]
+ON [dbo].[TenderEntry] ([RegisterNo])
+INCLUDE ([TransactionNumber],[TenderCode],[Amount],[SalesAmt])
+GO
+CREATE NONCLUSTERED INDEX [IX_TransactionHold_14]
+ON [dbo].[TransactionHold] ([TransactionNumber])
+INCLUDE ([ChequeNumber],[TransactedRegNo])
+GO
+CREATE NONCLUSTERED INDEX [IX_Accountability_04]
+ON [dbo].[Accountability] ([Reading],[RegisterNo],[DateTime])
+INCLUDE ([Cash])
+GO
+CREATE NONCLUSTERED INDEX [IX_TenderEntry_06]
+ON [dbo].[TenderEntry] ([Description],[RegisterNo])
+INCLUDE ([TransactionNumber],[SalesAmt])
+GO
+CREATE NONCLUSTERED INDEX [IX_Transaction_15]
+ON [dbo].[Transaction] ([RegisterNo],[Voided],[Time])
+INCLUDE ([Total])
+GO
+CREATE NONCLUSTERED INDEX [IX_TransactionEntries_07]
+ON [dbo].[TransactionEntries] ([RegisterNo],[DateTime],[Quantity],[DiscountReasonCode])
+INCLUDE ([TransactionNumber],[LineDiscount])
+GO
+CREATE NONCLUSTERED INDEX [IX_TransactionEntries_11]
+ON [dbo].[TransactionEntries] ([DiscountReasonCode],[RegisterNo],[DateTime],[Quantity])
+INCLUDE ([TransactionNumber],[LineDiscount])
+GO
+CREATE NONCLUSTERED INDEX [IX_Accountability_03]
+ON [dbo].[Accountability] ([RegisterNo],[DateTime])
+INCLUDE ([NOofItemsSold])
+GO
+CREATE NONCLUSTERED INDEX [IX_Accountability_05]
+ON [dbo].[Accountability] ([Reading],[RegisterNo],[ReadingFlag],[DateTime])
+INCLUDE ([Cash])
+GO
+CREATE NONCLUSTERED INDEX [IX_Transaction_16]
+ON [dbo].[Transaction] ([Time])
+
+GO

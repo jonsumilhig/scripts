@@ -1,0 +1,2 @@
+
+select * from Supplier where Code in (select code from Supplier group by Code having COUNT(code)>1)

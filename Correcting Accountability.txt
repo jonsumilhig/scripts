@@ -1,0 +1,21 @@
+
+
+Declare @TrxNo int = ''
+Declare @AmtAdj int = ''
+Declare @RegNo int =  ''
+Declare @Datetime nvarchar = ''
+Declare @BatchNo int = ''
+
+
+--update TenderEntry set SalesAmt = (select total from [transaction] where transactionnumber = @TrxNo and registerno = @RegNo),Amount = @AmtAdj
+--where transactionnumber = @TrxNo and registerno = @RegNo
+--delete from TenderEntry where Transactionnumber = @TrxNo and Registerno = @RegNo and [Type] = 'Cash'
+
+--update [POS-002].[OFFLINEDB].[dbo].TenderEntry set SalesAmt = (select total from [POS-002].[OFFLINEDB].[dbo].[transaction] where transactionnumber = @TrxNo and registerno = @RegNo),
+--Amount = @AmtAdj where transactionnumber = @TrxNo and registerno = @RegNo
+
+Update accountability set Cash = Cash + @AmtAdj, OverShort = OverShort - @AmtAdj, TotalCashINDrwr = TotalCashINDrwr + @AmtAdj where registerno = @RegNo and convert(char(8),datetime,112) = @Datetime and reading  = 'Cashier' and batchno = @BatchNo
+Update accountability set Cash = Cash + @AmtAdj, OverShort = OverShort - @AmtAdj, TotalCashINDrwr = TotalCashINDrwr + @AmtAdj where registerno = @RegNo and convert(char(8),datetime,112) = @Datetime and reading  = 'register' and ReadingFlag = 1
+
+Update [POS2].[OFFLINEDB].[dbo].accountability set Cash = Cash + @AmtAdj, OverShort = OverShort - @AmtAdj, TotalCashINDrwr = TotalCashINDrwr + @AmtAdj where registerno = @RegNo  and convert(char(8),datetime,112) = @Datetime and reading  = 'Cashier' and batchno = @BatchNo
+Update [POS2].[OFFLINEDB].[dbo].accountability set Cash = Cash + @AmtAdj, OverShort = OverShort - @AmtAdj, TotalCashINDrwr = TotalCashINDrwr + @AmtAdj where registerno = @RegNo and convert(char(8),datetime,112) = @Datetime and reading  = 'register' and ReadingFlag = 1

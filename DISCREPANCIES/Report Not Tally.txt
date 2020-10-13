@@ -1,0 +1,26 @@
+select a.TransactionNumber,total,ISNULL(salesAmt,0),total - ISNULL(salesAmt,0)
+from [Transaction] a left outer join  (SELECT TransactionNumber, SUM(SalesAmt) as SalesAmt, RegisterNo from [TenderEntry]
+group by transactionNumber, RegisterNo) b 
+on a.registerno = b.registerno and a.Transactionnumber = b.TransactionNumber where 
+convert (char (8),time  ,112) between '20190201' and '20190228' and a.RegisterNo = 1 and ABS(total - ISNULL(salesAmt,0))> 1 and a.StoreCode='101' order by TransactionNumber
+
+
+--select * from [Transaction] where TransactionNumber='100047940' and StoreCode=101
+--select * from TransactionEntries where TransactionNumber='100047940' and StoreCode=101
+select * from TenderEntry where TransactionNumber='100048885' and StoreCode=101
+
+--delete from TenderEntry where TransactionNumber in ('100048659','100048622','100048629') and StoreCode='101' and ID in ('130623','130542','130642') and ReferenceNumber=''
+
+select * from TenderEntry where Description='Benefits'  and StoreCode='101' and convert(char(8),dbtimestamp,112) ='20190207'
+select * from TenderEntry where Description='Benefits' and ReferenceNumber='' and StoreCode='101' and convert(char(8),dbtimestamp,112) ='20190207'
+--delete from TenderEntry where Description='Benefits' and ReferenceNumber='' and StoreCode='101' and convert(char(8),dbtimestamp,112) ='20190207'
+
+
+----------------------------------- dapat tally etong tatlo------------------------
+
+select sum(Total) from [transaction] where convert(char(8),time,112) between '20190201' and '20190228' and StoreCode='101'
+select sum(ExtendedAmt) from TransactionEntries where convert(char(8),DateTime,112) between '20190201' and '20190228' and StoreCode='101'
+select sum(SalesAmt) from TenderEntry where convert(char(8),DBTimeStamp,112) between '20190201' and '20190228' and StoreCode='101'
+
+
+-----------------------------

@@ -1,0 +1,22 @@
+DECLARE @TBL TABLE (
+    [name] nvarchar(500),
+    [rows] bigint,
+    [reserved] nvarchar(500),
+    [data] nvarchar(500),
+    [index_size] nvarchar(500),
+    [unused] nvarchar(500)
+)
+
+INSERT INTO @TBL
+EXEC sp_MSforeachtable @command1="EXEC sp_spaceused '?'"
+
+SELECT *,'SELECT ''' + name + ''', COUNT(*) FROM [' + name + '] UNION ALL', 'DELETE FROM [' + name + '];', 'DBCC CHECKIDENT(''[' + name + ']'',RESEED,0);' FROM @TBL 
+--WHERE name LIKE '%Sync%' AND name NOT IN ('Sync_StockLogs_OLD_20170203', 'xSync_Series', 'Sync_PurchaseOrderEntries_BACKUP')
+--ORDER BY name asc
+--WHERE name LIKE '%Sync%' AND [rows] > 0
+WHERE [rows] > 0 
+AND name NOT IN ('Country', 'BundledItems', 'ItemMatrix', 'BundleList', 'Category', 'Concessionaire', 'Configuration', 'Department', 'Item', 'Municipalities', 'POSSecurity', 'ReasonCode', 'ReceiptHeader', 'ReportFilterFields', 'ReportName', 'ReportPriveleges', 'Reports', 'SecurityManager', 'Store', 'SubCategory', 'Supplier', 'SupplierList', 'TaxRate', 'TenderTypes', 'Users', 'SalesRepresentative')
+and name NOT IN ('AllCardInfo', 'AllCardInfoMID', 'Bank', 'CreditCardTerms', 'Freebies', 'ItemContent')
+and name NOT IN ('Integration_Location', 'Integration_LocationDetails', 'KDSArea', 'KDSItemAssignment', 'License', 'TM_Areas', 'TM_Tables')
+and name not in ('AddOnControls', 'InventoryLocations', 'POSMachines', 'WristbandRestriction', 'DepartmentSchedule','SalesEffectivity')
+ORDER BY name ASC

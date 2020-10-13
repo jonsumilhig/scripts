@@ -1,0 +1,1 @@
+select 'select top 1  * from' + ' [' + name +']' from sys.tables

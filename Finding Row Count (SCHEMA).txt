@@ -1,0 +1,14 @@
+SELECT SCHEMA_NAME(schema_id) AS [SchemaName],
+[Tables].name AS [TableName],
+SUM([Partitions].[rows]) AS [TotalRowCount]
+FROM sys.tables AS [Tables]
+JOIN sys.partitions AS [Partitions]
+ON [Tables].[object_id] = [Partitions].[object_id]
+AND [Partitions].index_id IN ( 0, 1 )
+ --WHERE [Tables].name LIKE  'Sync_%'
+GROUP BY SCHEMA_NAME(schema_id), [Tables].name
+HAVING SUM([Partitions].[rows]) > 1
+ORDER BY SUM([Partitions].[rows]) DESC
+
+--Delete from Sync_StoreUpdates
+delete from GiftCertificate_Transaction where len(storecode) <> 3

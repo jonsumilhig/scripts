@@ -1,0 +1,1 @@
+update series set ControlNo = ControlNo - 2 where convert(char(8),DBTimeStamp,112) > 20190917

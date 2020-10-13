@@ -1,0 +1,16 @@
+-------Selecting Duplicate Row------
+
+select SupplierID,ItemID,MinimumOrder,Cost,MasterPackQuantity,Sync,count(SupplierID) as Duplicates
+ from SupplierList group by 
+SupplierID,ItemID,MinimumOrder,Cost,MasterPackQuantity,Sync having count(SupplierID) > 1
+
+
+------DELETING-----------
+WITH CTE (ItemID,SUpplierID,MinimumORder, Cost, MasterPackQuantity, DuplicateCount)
+AS
+(
+SELECT ItemID,SUpplierID,MinimumORder, Cost, MasterPackQuantity,ROW_NUMBER() 
+OVER(PARTITION BY ItemID,SUpplierID,MinimumORder, Cost, MasterPackQuantity ORDER BY ItemID) AS DuplicateCount
+from SupplierList
+)
+select * FROM CTE WHERE DuplicateCount > 1
